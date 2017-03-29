@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DropLayer: CAShapeLayer, CAAnimationDelegate {
+class DropLayer: CALayer, CAAnimationDelegate {
 
     var drawFillColor = false
     
@@ -29,22 +29,22 @@ class DropLayer: CAShapeLayer, CAAnimationDelegate {
     }
     
     override func draw(in ctx: CGContext) {
-                let width = frame.size.width/2
+        let width = frame.size.width/2
         let height = frame.size.height
         contentsScale = UIScreen.main.scale
         let shadow = NSShadow()
         shadow.shadowColor = UIColor.black.withAlphaComponent(1)
-        shadow.shadowOffset = CGSize(width: 3, height: 3)
+        shadow.shadowOffset = CGSize(width: 1, height: 1)
         shadow.shadowBlurRadius = 7
-
+        let offset: CGFloat = 5
         let path = CGMutablePath()
-        path.move(to: CGPoint(x: width, y: 10.0))
-        path.addQuadCurve(to: CGPoint(x:width, y:height-10), control: CGPoint(x:width*2.2, y:height*0.9))
-        path.addQuadCurve(to: CGPoint(x:width, y:10), control: CGPoint(x:width*(-0.2), y:height*0.9))
+        path.move(to: CGPoint(x: width, y: offset))
+        path.addQuadCurve(to: CGPoint(x:width, y:height - offset), control: CGPoint(x:width*2.2, y:height*0.85))
+        path.addQuadCurve(to: CGPoint(x:width, y:offset), control: CGPoint(x:width*(-0.2), y:height*0.85))
         ctx.addPath(path)
         ctx.setLineWidth(5.0)
         ctx.setLineCap(.round)
-        ctx.setLineJoin(.round)
+//        ctx.setLineJoin(.miter)
         if !drawFillColor {
             ctx.setStrokeColor(UIColor.white.cgColor)
             ctx.setShadow(offset: shadow.shadowOffset, blur: shadow.shadowBlurRadius, color: (shadow.shadowColor as! UIColor).cgColor)
@@ -59,8 +59,6 @@ class DropLayer: CAShapeLayer, CAAnimationDelegate {
         ctx.setStrokeColorSpace(CGColorSpaceCreateDeviceRGB())
     }
     
-    public func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
-        print("anim did end")
-    }
+   
 
 }

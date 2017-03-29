@@ -8,28 +8,36 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, CAAnimationDelegate {
     
     @IBOutlet weak var x: UIView!
-    var mainLayer: DropLayer?
-        var bigHiddenDrop: DropLayer?
-    var layers: [DropLayer]?
+    var mainLayer: DropLayer!
+    var bigHiddenDrop: DropLayer!
+    var layers: [DropLayer]!
     var visible = false
     let distance:CGFloat = 300
+    var fallingWaterLayer: CAShapeLayer!
+    var seaMaskLayer: WavesLayer!
+    
+    
     @IBOutlet weak var scrollView: UIScrollView!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        addHiddenDrops()
+       addHiddenDrops()
         scrollView.contentSize = CGSize(width: self.view.bounds.width, height: self.view.bounds.height * 2.5)
         scrollView.isScrollEnabled = true
+        fallingWaterLayer = CAShapeLayer()
+        fallingWaterLayer.frame = x.bounds
+        fallingWaterLayer.fillColor = UIColor.blue.cgColor
+        let path = CGPath(rect:fallingWaterLayer.bounds, transform:nil)
+        fallingWaterLayer.path = path
+//        x.layer.addSublayer(fallingWaterLayer)
         mainLayer = DropLayer(x.bounds, shouldFillLayer:false)
-        //           lay.setNeedsDisplay()
-        
         x.layer.addSublayer(mainLayer!)
-
+        bigHiddenDrop.mask = fallingWaterLayer
     }
     
     override func didReceiveMemoryWarning() {
@@ -44,11 +52,10 @@ class ViewController: UIViewController {
         let mainWidth = x.bounds.size.width
         var xPosition = x.bounds.midX - width/2
         
-        bigHiddenDrop = DropLayer(CGRect(origin:CGPoint(x: xPosition, y: x.bounds.origin.y - distance),
-                                             size:x.frame.size),
+        bigHiddenDrop = DropLayer(x.bounds,
                                       shouldFillLayer:true)
-        bigHiddenDrop?.opacity = 0.4
-        
+        bigHiddenDrop?.opacity = 1.0
+//        bigHiddenDrop?.transform = CATransform3DMakeScale(0.5, 0.5, 1.0)
         bigHiddenDrop?.isHidden = true
         xPosition = x.bounds.midX - CGFloat(arc4random_uniform(UInt32(mainWidth / 2)))
         var yPosition = x.bounds.origin.y + CGFloat(arc4random_uniform(UInt32(mainWidth / 2)))
@@ -71,7 +78,7 @@ class ViewController: UIViewController {
         x.layer.addSublayer(bigHiddenDrop!)
         x.layer.addSublayer(lay2)
         layers = [lay1, bigHiddenDrop!, lay2]
-        //            bigHiddenDrop?.bounds.size = CGSize(width:(bigHiddenDrop?.bounds.size.width)! / 3, height:(bigHiddenDrop?.bounds.size.height)! / 2)
+
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -85,13 +92,13 @@ class ViewController: UIViewController {
                 var realDistanceToCenter = x.frame.midY - bottomOffset
                 var percent = realDistanceToCenter / distance
                     
-                    let animPosition = CABasicAnimation(keyPath: "position")
-                    animPosition.duration = 1
-                    animPosition.fillMode = kCAFillModeForwards
-                    animPosition.isRemovedOnCompletion = false
-                    //        anim.fromValue = NSValue(cgRect: CGRect(x: 0, y: 0, width: 0, height: 30))
-                    animPosition.toValue = NSValue(cgRect: CGRect(x:(mainLayer?.frame.midX)!, y:(mainLayer?.frame.midY)!, width: (mainLayer?.frame.size.width)!, height: (mainLayer?.frame.size.height)!))
-                    bigHiddenDrop?.add(animPosition, forKey: "position")
+//                    let animPosition = CABasicAnimation(keyPath: "position")
+//                    animPosition.duration = 1
+//                    animPosition.fillMode = kCAFillModeForwards
+//                    animPosition.isRemovedOnCompletion = false
+//                    //        anim.fromValue = NSValue(cgRect: CGRect(x: 0, y: 0, width: 0, height: 30))
+//                    animPosition.toValue = NSValue(cgRect: CGRect(x:(mainLayer?.frame.midX)!, y:(mainLayer?.frame.midY)!, width: (mainLayer?.frame.size.width)!, height: (mainLayer?.frame.size.height)!))
+//                    bigHiddenDrop?.add(animPosition, forKey: "position")
                     
                     
 //                    for lay in layers! {
@@ -133,51 +140,68 @@ class ViewController: UIViewController {
 }
     
     @IBAction func fly(_ sender: Any) {
+
+//                bigHiddenDrop?.isHidden = false
+//                CATransaction.setDisableActions(true)
+//
+//                let anim = CASpringAnimation(keyPath: "position")
+//                anim.damping = 0.7
+//                anim.initialVelocity = 1
+//                anim.mass = 0.04
+//                anim.stiffness = 4
+//                anim.duration = 5.8
+//        anim.toValue = CGPoint(x: (mainLayer?.bounds.size.width)!, y: (mainLayer?.bounds.size.height)!)
+//                print(anim.settlingDuration)
+//                bigHiddenDrop?.add(anim, forKey: nil)
+//
+//        let animOpacity = CABasicAnimation(keyPath: "opacity")
+//        animOpacity.duration = 5.8
+//
+//        animOpacity.toValue = 1
+//
+//        let animSize = CABasicAnimation(keyPath: "transform")
+//        animSize.duration = 5.8
+//
+//        animSize.toValue = CATransform3DMakeScale(2.05, 2.05, 1.0)
+//
+//        let group = CAAnimationGroup()
+//        group.animations = [anim, animOpacity, animSize]
+//        group.duration = 5.8
+//        group.fillMode = kCAFillModeForwards
+//        group.isRemovedOnCompletion = false
+//
+//        bigHiddenDrop?.add(group, forKey: nil)
         
-        //        CATransaction.begin()
-        //        CATransaction.setAnimationDuration(10.0)
-        //        lay.bounds = CGRect(x:0, y:0, width: 200 , height: 250)
-        //        CATransaction.commit()
         
-        //        lay.transform = CATransform3DScale(m11, 5, 5, 400)
-        //        bigHiddenDrop?.isHidden = false
-        //        CATransaction.setDisableActions(true)
-        //        bigHiddenDrop?.position.y = (mainLayer?.position.y)!
-        //         bigHiddenDrop?.bounds.size.height = (mainLayer?.bounds.size.height)!
-        //        bigHiddenDrop?.bounds.size.width = (mainLayer?.bounds.size.width)!
-        //        let anim = CASpringAnimation(keyPath: "position")
-        //        anim.damping = 0.7
-        //        anim.initialVelocity = 20
-        //        anim.mass = 0.04
-        //        anim.stiffness = 4
-        //        anim.duration = 100.8
-        //        print(anim.settlingDuration)
-        //        bigHiddenDrop?.add(anim, forKey: nil)
+        let animation = CABasicAnimation(keyPath: "bounds.origin.y")
+        animation.toValue = x.bounds.size.width * -0.75
+        animation.duration = 5.8
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        animation.fillMode = kCAFillModeBoth
+        animation.isRemovedOnCompletion = false
+        animation.delegate = self
+        bigHiddenDrop?.add(animation, forKey: animation.keyPath)
         
+        seaMaskLayer = WavesLayer()
+        seaMaskLayer.frame = mainLayer.bounds
+        seaMaskLayer.setNeedsDisplay()
+       
+    }
+    
+     func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
         
-        
-        //        bigHiddenDrop?.transform = CATransform3DMakeScale(0.5, 0.5, 1.0)
-        
-        //        let anim = CABasicAnimation(keyPath: "bounds")
-        //        anim.duration = 5
-        ////        anim.fromValue = NSValue(cgRect: CGRect(x: 0, y: 0, width: 0, height: 30))
-        //        anim.toValue = NSValue(cgRect: (mainLayer?.frame)!)
-        //        bigHiddenDrop?.add(anim, forKey: "anim")
-        
-        
-                let animPosition = CABasicAnimation(keyPath: "position")
-                animPosition.duration = 2
-        animPosition.fillMode = kCAFillModeForwards
-        animPosition.isRemovedOnCompletion = false
-                //        anim.fromValue = NSValue(cgRect: CGRect(x: 0, y: 0, width: 0, height: 30))
-        animPosition.toValue = NSValue(cgRect: CGRect(x:(mainLayer?.frame.midX)!, y:(mainLayer?.frame.midY)!, width: (mainLayer?.frame.size.width)!, height: (mainLayer?.frame.size.height)!))
-                bigHiddenDrop?.add(animPosition, forKey: "position")
+        if (anim as! CABasicAnimation).keyPath == "bounds.origin.y" {
+            bigHiddenDrop?.mask = seaMaskLayer
+//            x.layer.addSublayer(seaMaskLayer)
+//            drawArc()
+        }
+    }
+    
+    func drawArc() {
+        bigHiddenDrop?.mask = seaMaskLayer
+//        seaMaskLayer?.animate()
 
     }
-    
-    
-    public func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
-        print("anim did end")
-    }
+
 }
 
