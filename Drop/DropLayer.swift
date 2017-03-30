@@ -9,14 +9,14 @@
 import UIKit
 
 class DropLayer: CALayer, CAAnimationDelegate {
-
+    
     var drawFillColor = false
     
     init(_ rect:CGRect, shouldFillLayer:Bool) {
         super.init()
         self.frame = rect
         drawFillColor = shouldFillLayer
-
+        
         setNeedsDisplay()
     }
     
@@ -44,7 +44,7 @@ class DropLayer: CALayer, CAAnimationDelegate {
         ctx.addPath(path)
         ctx.setLineWidth(5.0)
         ctx.setLineCap(.round)
-//        ctx.setLineJoin(.miter)
+        
         if !drawFillColor {
             ctx.setStrokeColor(UIColor.white.cgColor)
             ctx.setShadow(offset: shadow.shadowOffset, blur: shadow.shadowBlurRadius, color: (shadow.shadowColor as! UIColor).cgColor)
@@ -52,13 +52,10 @@ class DropLayer: CALayer, CAAnimationDelegate {
         } else {
             ctx.setFillColor(UIColor(colorLiteralRed: 161/255, green: 218/255, blue: 253/255, alpha: 1.0).cgColor)
             ctx.fillPath()
-
+            
         }
-
-
+ 
         ctx.setStrokeColorSpace(CGColorSpaceCreateDeviceRGB())
     }
-    
-   
-
+ 
 }

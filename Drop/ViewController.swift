@@ -18,7 +18,7 @@ class ViewController: UIViewController, CAAnimationDelegate {
     let distance:CGFloat = 300
     var fallingWaterLayer: CAShapeLayer!
     var seaMaskLayer: WavesLayer!
-    
+    var dropForSea: DropLayer!
     
     @IBOutlet weak var scrollView: UIScrollView!
     
@@ -38,12 +38,35 @@ class ViewController: UIViewController, CAAnimationDelegate {
         mainLayer = DropLayer(x.bounds, shouldFillLayer:false)
         x.layer.addSublayer(mainLayer!)
         bigHiddenDrop.mask = fallingWaterLayer
+        addwaves()
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func addwaves() {
+        
+        let ex = UIView(frame: CGRect(x: 400, y: 100, width: 200, height: 200))
+        scrollView.addSubview(ex)
+    let sea = WavesLayer()
+        sea.frame = CGRect(x: -2 * x.bounds.width, y: 0, width: ex.bounds.width * 3, height: ex.bounds.height)
+        sea.setNeedsDisplay()
+        ex.layer.addSublayer(sea)
+        
+        let arcAnimationPre: CABasicAnimation = CABasicAnimation(keyPath: "position")
+        //        arcAnimationPre.fromValue = 0
+        arcAnimationPre.toValue = 100
+        //        arcAnimationPre.beginTime = 5.8
+        arcAnimationPre.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        arcAnimationPre.fillMode = kCAFillModeBoth
+        arcAnimationPre.isRemovedOnCompletion = false
+        arcAnimationPre.duration = 5
+        //        arcAnimationPre.repeatCount = 5
+        sea.add(arcAnimationPre, forKey: arcAnimationPre.keyPath)
+    }
+    
     
     func addHiddenDrops() {
         
@@ -183,7 +206,7 @@ class ViewController: UIViewController, CAAnimationDelegate {
         bigHiddenDrop?.add(animation, forKey: animation.keyPath)
         
         seaMaskLayer = WavesLayer()
-        seaMaskLayer.frame = mainLayer.bounds
+        seaMaskLayer.frame = CGRect(x: -3 * x.bounds.width, y: 0, width: x.bounds.width * 4, height: x.bounds.height)
         seaMaskLayer.setNeedsDisplay()
        
     }
@@ -192,16 +215,19 @@ class ViewController: UIViewController, CAAnimationDelegate {
         
         if (anim as! CABasicAnimation).keyPath == "bounds.origin.y" {
             bigHiddenDrop?.mask = seaMaskLayer
-//            x.layer.addSublayer(seaMaskLayer)
-//            drawArc()
+            animate()
         }
     }
     
-    func drawArc() {
-        bigHiddenDrop?.mask = seaMaskLayer
-//        seaMaskLayer?.animate()
-
+    func animate() {
+        
+        let waveAnimation: CABasicAnimation = CABasicAnimation(keyPath: "bounds.origin.x")
+        waveAnimation.toValue = -100
+        waveAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        waveAnimation.duration = 5
+        waveAnimation.repeatCount = Float.infinity
+        bigHiddenDrop.add(waveAnimation, forKey: waveAnimation.keyPath)
+        
     }
-
 }
 
