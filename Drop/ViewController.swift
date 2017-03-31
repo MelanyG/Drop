@@ -38,7 +38,7 @@ class ViewController: UIViewController, CAAnimationDelegate {
         mainLayer = DropLayer(x.bounds, shouldFillLayer:false)
         x.layer.addSublayer(mainLayer!)
         bigHiddenDrop.mask = fallingWaterLayer
-        addwaves()
+//        addwaves()
     }
     
     override func didReceiveMemoryWarning() {
@@ -211,7 +211,7 @@ class ViewController: UIViewController, CAAnimationDelegate {
        
     }
     
-     func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
         
         if (anim as! CABasicAnimation).keyPath == "bounds.origin.y" {
             bigHiddenDrop?.mask = seaMaskLayer
