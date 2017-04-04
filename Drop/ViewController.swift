@@ -20,6 +20,7 @@ class ViewController: UIViewController, CAAnimationDelegate {
     var seaMaskLayer: WavesLayer!
     var dropForSea: DropLayer!
     
+    @IBOutlet weak var natureView: NatureView!
     @IBOutlet weak var scrollView: UIScrollView!
     
     
@@ -38,6 +39,9 @@ class ViewController: UIViewController, CAAnimationDelegate {
         mainLayer = DropLayer(x.bounds, shouldFillLayer:false)
         x.layer.addSublayer(mainLayer!)
         bigHiddenDrop.mask = fallingWaterLayer
+        
+//        let sun = SunLayer(CGRect(x: 0, y: 0, width: 50, height: 50))
+//        self.view.layer.addSublayer(sun)
 //        addwaves()
     }
     
@@ -163,7 +167,7 @@ class ViewController: UIViewController, CAAnimationDelegate {
 }
     
     @IBAction func fly(_ sender: Any) {
-
+        natureView.setNeedsDisplay()
 //                bigHiddenDrop?.isHidden = false
 //                CATransaction.setDisableActions(true)
 //

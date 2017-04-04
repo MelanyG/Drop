@@ -15,6 +15,7 @@
 		39396E161E89026D0038F220 /* DropLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39396E151E89026D0038F220 /* DropLayer.swift */; };
 		39396E181E8BE94D0038F220 /* WavesLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39396E171E8BE94D0038F220 /* WavesLayer.swift */; };
 		395ECB671E8EA38000003C2B /* NatureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395ECB661E8EA38000003C2B /* NatureView.swift */; };
+		395ECB691E93ADFB00003C2B /* SunLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395ECB681E93ADFB00003C2B /* SunLayer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		39396E151E89026D0038F220 /* DropLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropLayer.swift; sourceTree = "<group>"; };
 		39396E171E8BE94D0038F220 /* WavesLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WavesLayer.swift; sourceTree = "<group>"; };
 		395ECB661E8EA38000003C2B /* NatureView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NatureView.swift; sourceTree = "<group>"; };
+		395ECB681E93ADFB00003C2B /* SunLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SunLayer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 		39396E021E89023F0038F220 /* Drop */ = {
 			isa = PBXGroup;
 			children = (
+				395ECB681E93ADFB00003C2B /* SunLayer.swift */,
 				39396E031E89023F0038F220 /* AppDelegate.swift */,
 				39396E051E89023F0038F220 /* ViewController.swift */,
 				39396E151E89026D0038F220 /* DropLayer.swift */,
@@ -147,6 +150,7 @@
 			files = (
 				39396E061E89023F0038F220 /* ViewController.swift in Sources */,
 				395ECB671E8EA38000003C2B /* NatureView.swift in Sources */,
+				395ECB691E93ADFB00003C2B /* SunLayer.swift in Sources */,
 				39396E161E89026D0038F220 /* DropLayer.swift in Sources */,
 				39396E181E8BE94D0038F220 /* WavesLayer.swift in Sources */,
 				39396E041E89023F0038F220 /* AppDelegate.swift in Sources */,
