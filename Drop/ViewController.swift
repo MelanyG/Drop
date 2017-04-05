@@ -168,6 +168,10 @@ class ViewController: UIViewController, CAAnimationDelegate {
     
     @IBAction func fly(_ sender: Any) {
         natureView.setNeedsDisplay()
+        
+//         Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(drawForce), userInfo: nil, repeats: true)
+//        natureView.addSunAnimation()
+
 //                bigHiddenDrop?.isHidden = false
 //                CATransaction.setDisableActions(true)
 //
@@ -213,6 +217,10 @@ class ViewController: UIViewController, CAAnimationDelegate {
         seaMaskLayer.frame = CGRect(x: -3 * x.bounds.width, y: 0, width: x.bounds.width * 4, height: x.bounds.height)
         seaMaskLayer.setNeedsDisplay()
        
+    }
+    
+    func drawForce() {
+        natureView.setNeedsDisplay()
     }
     
     func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
