@@ -17,6 +17,7 @@
 		395ECB671E8EA38000003C2B /* NatureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395ECB661E8EA38000003C2B /* NatureView.swift */; };
 		395ECB691E93ADFB00003C2B /* SunLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395ECB681E93ADFB00003C2B /* SunLayer.swift */; };
 		3965F9711E9544B2002EB723 /* UIImage + Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3965F9701E9544B2002EB723 /* UIImage + Ext.swift */; };
+		3965F9731E96464B002EB723 /* WindmillLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3965F9721E96464B002EB723 /* WindmillLayer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		395ECB661E8EA38000003C2B /* NatureView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NatureView.swift; sourceTree = "<group>"; };
 		395ECB681E93ADFB00003C2B /* SunLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SunLayer.swift; sourceTree = "<group>"; };
 		3965F9701E9544B2002EB723 /* UIImage + Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage + Ext.swift"; sourceTree = "<group>"; };
+		3965F9721E96464B002EB723 /* WindmillLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindmillLayer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +74,7 @@
 				39396E071E89023F0038F220 /* Main.storyboard */,
 				395ECB661E8EA38000003C2B /* NatureView.swift */,
 				3965F9701E9544B2002EB723 /* UIImage + Ext.swift */,
+				3965F9721E96464B002EB723 /* WindmillLayer.swift */,
 				39396E0A1E89023F0038F220 /* Assets.xcassets */,
 				39396E0C1E89023F0038F220 /* LaunchScreen.storyboard */,
 				39396E0F1E89023F0038F220 /* Info.plist */,
@@ -154,6 +157,7 @@
 				3965F9711E9544B2002EB723 /* UIImage + Ext.swift in Sources */,
 				39396E061E89023F0038F220 /* ViewController.swift in Sources */,
 				395ECB671E8EA38000003C2B /* NatureView.swift in Sources */,
+				3965F9731E96464B002EB723 /* WindmillLayer.swift in Sources */,
 				395ECB691E93ADFB00003C2B /* SunLayer.swift in Sources */,
 				39396E161E89026D0038F220 /* DropLayer.swift in Sources */,
 				39396E181E8BE94D0038F220 /* WavesLayer.swift in Sources */,
