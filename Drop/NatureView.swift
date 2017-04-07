@@ -34,8 +34,9 @@ class NatureView: UIView, CAAnimationDelegate {
         drawSunLayer(rect: rect, inContext: context!, withColorSpace: colorSpace)
         drawVerticalLines(rect: rect, inContext: context!, withColor: UIColor.white.withAlphaComponent(0.5), withColorSpace: colorSpace)
         
-        addWindMill(inRect: CGRect(x: 120, y: rect.height, width: 250, height: 250), inContext: context!, withColorSpace: colorSpace)
+        addWindMill(inRect: CGRect(x: 220, y: rect.height, width: 250, height: 250), inContext: context!, withColorSpace: colorSpace)
         
+        drawMoonPhase(inRect:  CGRect(x: rect.width - rect.width / 3, y: 100, width: 70, height: 70), inContext: context!)
     }
     
     func drawMountains(inRect rect:CGRect, inContext context:CGContext, withColorSpace colorSpace:CGColorSpace) {
@@ -237,12 +238,12 @@ class NatureView: UIView, CAAnimationDelegate {
         let bottomWidth: CGFloat = 14
         
         let bottom = CGMutablePath()
-        bottom.move(to: CGPoint(x:rect.origin.x + sizeWindMill.width / 2 - bottomWidth / 2, y: rect.origin.y - 6))
-        bottom.addLine(to: CGPoint(x:rect.origin.x + sizeWindMill.width / 2 + bottomWidth / 2, y: rect.origin.y - 6))
-        bottom.addLine(to: CGPoint(x:rect.origin.x + sizeWindMill.width / 2 + bottomWidth / 3, y: rect.origin.y - sizeWindMill.height + 100))
-        bottom.addLine(to: CGPoint(x:rect.origin.x + sizeWindMill.width / 2, y: rect.origin.y - sizeWindMill.height + 50))
-        bottom.addLine(to: CGPoint(x:rect.origin.x + sizeWindMill.width / 2 - bottomWidth / 3 , y: rect.origin.y - sizeWindMill.height + 100))
-        bottom.addLine(to: CGPoint(x:rect.origin.x + sizeWindMill.width / 2 - bottomWidth / 2, y: rect.origin.y - 6))
+        bottom.move(to: CGPoint(x:rect.origin.x - bottomWidth / 2, y: rect.origin.y - 6))
+        bottom.addLine(to: CGPoint(x:rect.origin.x + bottomWidth / 2, y: rect.origin.y - 6))
+        bottom.addLine(to: CGPoint(x:rect.origin.x + bottomWidth / 3, y: rect.origin.y - sizeWindMill.height + 100))
+        bottom.addLine(to: CGPoint(x:rect.origin.x, y: rect.origin.y - sizeWindMill.height + 50))
+        bottom.addLine(to: CGPoint(x:rect.origin.x - bottomWidth / 3 , y: rect.origin.y - sizeWindMill.height + 100))
+        bottom.addLine(to: CGPoint(x:rect.origin.x - bottomWidth / 2, y: rect.origin.y - 6))
         
         ctx.addPath(bottom)
         
@@ -250,12 +251,12 @@ class NatureView: UIView, CAAnimationDelegate {
         let smallWidth: CGFloat = 10
         
         let small = CGMutablePath()
-        small.move(to: CGPoint(x:rect.origin.x + sizeWindMillSmall.width * 0.7 + sizeWindMillSmall.width / 2 - smallWidth / 2, y: rect.origin.y - 6))
-        small.addLine(to: CGPoint(x:rect.origin.x  + sizeWindMillSmall.width * 0.7 + sizeWindMillSmall.width / 2 + smallWidth / 2, y: rect.origin.y - 6))
-        small.addLine(to: CGPoint(x:rect.origin.x + sizeWindMillSmall.width * 0.7 + sizeWindMillSmall.width / 2 + smallWidth / 3, y: rect.origin.y - sizeWindMillSmall.height + 80))
-        small.addLine(to: CGPoint(x:rect.origin.x + sizeWindMillSmall.width * 0.7 + sizeWindMillSmall.width / 2, y: rect.origin.y - sizeWindMillSmall.height + 30))
-        small.addLine(to: CGPoint(x:rect.origin.x + sizeWindMillSmall.width * 0.7 + sizeWindMillSmall.width / 2 - smallWidth / 3 , y: rect.origin.y - sizeWindMillSmall.height + 80))
-        small.addLine(to: CGPoint(x:rect.origin.x + sizeWindMillSmall.width * 0.7 + sizeWindMillSmall.width / 2 - smallWidth / 2, y: rect.origin.y - 6))
+        small.move(to: CGPoint(x:rect.origin.x + sizeWindMillSmall.width * 1.2 - smallWidth / 2, y: rect.origin.y - 6))
+        small.addLine(to: CGPoint(x:rect.origin.x  + sizeWindMillSmall.width * 1.2 + smallWidth / 2, y: rect.origin.y - 6))
+        small.addLine(to: CGPoint(x:rect.origin.x + sizeWindMillSmall.width * 1.2 + smallWidth / 3, y: rect.origin.y - sizeWindMillSmall.height + 80))
+        small.addLine(to: CGPoint(x:rect.origin.x + sizeWindMillSmall.width * 1.2, y: rect.origin.y - sizeWindMillSmall.height + 30))
+        small.addLine(to: CGPoint(x:rect.origin.x + sizeWindMillSmall.width * 1.2 - smallWidth / 3 , y: rect.origin.y - sizeWindMillSmall.height + 80))
+        small.addLine(to: CGPoint(x:rect.origin.x + sizeWindMillSmall.width * 1.2 - smallWidth / 2, y: rect.origin.y - 6))
         
         ctx.addPath(small)
         
@@ -272,19 +273,102 @@ class NatureView: UIView, CAAnimationDelegate {
         
     }
     
+    func drawMoonPhase(inRect rect:CGRect, inContext context: CGContext) {
+
+        let moonShape = UIBezierPath(ovalIn: rect)
+        moonShape.lineWidth = 4.0
+        UIColor.white.setStroke()
+        moonShape.stroke()
+        moonShape.close()
+        
+        let moonLayer = CAShapeLayer()
+        moonLayer.path = moonShape.cgPath
+        moonLayer.opacity = 0
+        self.layer.addSublayer(moonLayer)
+        
+        let circlePath = UIBezierPath(ovalIn: rect)
+        UIColor.blue.setFill()
+        circlePath.fill()
+        circlePath.close()
+        
+        let circleShape = CAShapeLayer()
+        circleShape.path = circlePath.cgPath
+        circleShape.opacity = 0
+
+        var transform = CATransform3DIdentity
+        transform.m34 = -1 / 500.0
+
+        transform = CATransform3DRotate(transform, (CGFloat(Double.pi * 0.3)), 0, 1, 0)
+        circleShape.transform = transform
+        
+        moonLayer.mask = circleShape
+        
+        
+//        let offcet: CGFloat = 50
+//        let animation = CABasicAnimation(keyPath: "transform")
+//        animation.toValue = transform
+//        animation.duration = 3
+//        
+//        circleShape.add(animation, forKey: "transform")
+        
+        //        let moon = CGMutablePath()
+//        moon.addEllipse(in: rect)
+//        context.addPath(moon)
+//        context.setStrokeColor(UIColor.white.cgColor)
+//        context.setLineWidth(3.0)
+//        context .strokePath()
+//        context.closePath()
+//        let offcet: CGFloat = 50
+//        moonLayer.addSublayer(circleShape)
+        
+        //        circlePath.move(to: CGPoint(x: rect.midX, y: rect.origin.y))
+//        circlePath.addCurve(to: CGPoint(x: rect.midX, y: rect.origin.y + rect.height),
+//                            controlPoint1: CGPoint(x: rect.midX + offcet * 0.3, y:  rect.midY - 32),
+//                            controlPoint2: CGPoint(x: rect.midX + offcet * 0.3, y:  rect.midY + 32))
+//        circlePath.addCurve(to: CGPoint(x: rect.midX, y: rect.origin.y),
+//                            controlPoint1: CGPoint(x: rect.midX - 50 , y:  rect.midY - 32),
+//                            controlPoint2: CGPoint(x: rect.midX - 50, y:  rect.midY + 32))
+//        circlePath.fill()
+//        let moonChange = CGMutablePath()
+//        moonChange.move(to: CGPoint(x:rect.width / 2, y: 0) )
+//        moonChange.addQuadCurve(to: CGPoint(x:rect.width / 2, y: rect.height), control: CGPoint(x: rect.width * 2, y:rect.height / 2))
+//        context.addPath(moonChange)
+//        context.setStrokeColor(UIColor.white.cgColor)
+//        context.setLineWidth(3.0)
+//        context .strokePath()
+//        context.closePath()
+//        let moon = CAShapeLayer()
+//        moon.frame = rect
+//        moon.backgroundColor = UIColor.white.cgColor
+//        moon.cornerRadius = 50
+//        
+//        self.layer.addSublayer(moon)
+//        
+//        let scaleAnimation = CABasicAnimation(keyPath: "transform.scale")
+//        scaleAnimation.duration = 0.2
+//        scaleAnimation.repeatCount = HUGE
+//        scaleAnimation.autoreverses = true
+//        scaleAnimation.fromValue = 1.2
+//        scaleAnimation.toValue = 0.8
+//        
+//        moon.add(scaleAnimation, forKey: scaleAnimation.keyPath)
+        
+        
+    }
+    
     func addWindAnimation(inRect rect: CGRect) {
         
         
-        bigMill.frame = CGRect(origin:CGPoint(x:rect.origin.x, y: rect.origin.y - sizeWindMill.height * 1.35),size: sizeWindMill)
+        bigMill.frame = CGRect(origin:CGPoint(x:rect.origin.x - sizeWindMill.width / 2, y: rect.origin.y - sizeWindMill.height * 1.35),size: sizeWindMill)
         bigMill.setNeedsDisplay()
         self.layer.addSublayer(bigMill)
         
         
-        smallMill.frame = CGRect(origin:CGPoint(x:rect.origin.x + sizeWindMillSmall.width * 0.7  , y: rect.origin.y - sizeWindMillSmall.height * 1.4),size: sizeWindMillSmall)
+        smallMill.frame = CGRect(origin:CGPoint(x:rect.origin.x + sizeWindMillSmall.width * 0.7, y: rect.origin.y - sizeWindMillSmall.height * 1.4),size: sizeWindMillSmall)
         smallMill.setNeedsDisplay()
         self.layer.addSublayer(smallMill)
         let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
-        rotationAnimation.toValue = M_PI * 2.0
+        rotationAnimation.toValue = Double.pi * 2.0
         
         rotationAnimation.duration = 10
         
