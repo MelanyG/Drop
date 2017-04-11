@@ -12,13 +12,17 @@ class NatureView: UIView, CAAnimationDelegate {
     let inset: CGFloat = 60
     var sun: SunLayer?
     var endEngle: Double = 0.01
+//    var moonEdge = 1.0
     var sunPoint: Double = 50
     var sunPosition: Double  {
         get {
             return sunPoint * 0.7 / 100
         }
     }
+    
+    var moonPhase: CALayer!
     var timer: Timer?
+    var moonTimer: Timer?
     let bigMill = WindmillLayer()
     let smallMill = WindmillLayer()
     let sizeWindMill = CGSize(width: 200.0, height: 200.0)
@@ -37,6 +41,8 @@ class NatureView: UIView, CAAnimationDelegate {
         addWindMill(inRect: CGRect(x: 220, y: rect.height, width: 250, height: 250), inContext: context!, withColorSpace: colorSpace)
         
         drawMoonPhase(inRect:  CGRect(x: rect.width - rect.width / 3, y: 100, width: 70, height: 70), inContext: context!)
+        
+//        drawMoon(inRect:  CGRect(x: rect.width - rect.width / 3, y: 100, width: 70, height: 70), inContext: context!)
     }
     
     func drawMountains(inRect rect:CGRect, inContext context:CGContext, withColorSpace colorSpace:CGColorSpace) {
@@ -162,9 +168,9 @@ class NatureView: UIView, CAAnimationDelegate {
         let circleCenterX = CGPoint(x: bounds.width / 2, y: bounds.height * 1)
         let circleRadiusX = (bounds.width - 110) / 2
         let decimalInputX = 0.5
-        let start = CGFloat(2 * M_PI_2)
+        let start = CGFloat(Double.pi)
         
-        let endYellow = start + CGFloat(3 * M_PI * decimalInputX * endEngle)
+        let endYellow = start + CGFloat(3 * Double.pi * decimalInputX * endEngle)
         
         UIColor(colorLiteralRed: 253/255, green: 206/255, blue: 84/255, alpha: 1.0).setStroke()
         
@@ -175,7 +181,7 @@ class NatureView: UIView, CAAnimationDelegate {
         circlePathYellow.setLineDash(pattern, count: 2, phase: 0.0)
         
         endEngle += 0.02
-        
+    
         
         circlePathYellow.stroke()
         if endEngle > sunPosition {
@@ -197,6 +203,7 @@ class NatureView: UIView, CAAnimationDelegate {
         sun?.position = CGPoint(x: circlePathYellow.currentPoint.x, y: circlePathYellow.currentPoint.y)
         if timer == nil || !(timer?.isValid)! {
             timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(addSunAnimation), userInfo: nil, repeats: true)
+//            moonTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateMoonPhase), userInfo: nil, repeats: true)
         }
         
     }
@@ -273,37 +280,52 @@ class NatureView: UIView, CAAnimationDelegate {
         
     }
     
+    func updateMoonPhase() {
+//        moonEdge -= 0.1
+        moonPhase = moonMask(in: CGRect(x: bounds.width - bounds.width / 3, y: 100, width: 70, height: 70), forProgress: 0.9)
+//        if moonEdge < 0 {
+            moonTimer?.invalidate()
+//        }
+    }
+
+    
+    
     func drawMoonPhase(inRect rect:CGRect, inContext context: CGContext) {
-
-        let moonShape = UIBezierPath(ovalIn: rect)
-        moonShape.lineWidth = 4.0
-        UIColor.white.setStroke()
-        moonShape.stroke()
-        moonShape.close()
-        
         let moonLayer = CAShapeLayer()
-        moonLayer.path = moonShape.cgPath
-        moonLayer.opacity = 0
-        self.layer.addSublayer(moonLayer)
+        moonLayer.path = UIBezierPath(ovalIn: rect).cgPath
+        moonLayer.fillColor = UIColor.clear.cgColor
+        moonLayer.strokeColor = UIColor.white.cgColor
+        moonLayer.lineWidth = 2
+//        moonLayer.shadowColor = UIColor.white.cgColor
+//        moonLayer.shadowOpacity = 1
+//        moonLayer.shadowRadius = 10
+//        moonLayer.shadowPath = moonLayer.path
+//        moonLayer.shadowOffset = .zero
         
-        let circlePath = UIBezierPath(ovalIn: rect)
-        UIColor.blue.setFill()
-        circlePath.fill()
-        circlePath.close()
+        layer.addSublayer(moonLayer)
         
-        let circleShape = CAShapeLayer()
-        circleShape.path = circlePath.cgPath
-        circleShape.opacity = 0
+        moonPhase = moonMask(in: rect, forProgress: 0.9)
+//        moonPhase.shadowColor = UIColor.white.cgColor
+//        moonPhase.shadowOpacity = 1
+//        moonPhase.shadowRadius = 10
+//        moonPhase.shadowPath = moonLayer.path
+//        moonPhase.shadowOffset = .zero
 
-        var transform = CATransform3DIdentity
-        transform.m34 = -1 / 500.0
+        moonLayer.addSublayer(moonPhase)
+//
+//        moonLayer.mask = circleShape
+//        let animation =  CABasicAnimation(keyPath: "transform.rotation.z")
+//        //        animation.fromValue = @(0);
+//        animation.toValue = 2 * Double.pi
+//        animation.repeatCount = Float(CGFloat.infinity)
+//        animation.duration = 5.0
+//        
+//        moonPhase.add(animation, forKey:"rotation")
+        
+//        var transform = CATransform3DIdentity
+//        transform.m34 = 1.0 / 500.0
+//        view.layer.transform = transform
 
-        transform = CATransform3DRotate(transform, (CGFloat(Double.pi * 0.3)), 0, 1, 0)
-        circleShape.transform = transform
-        
-        moonLayer.mask = circleShape
-        
-        
 //        let offcet: CGFloat = 50
 //        let animation = CABasicAnimation(keyPath: "transform")
 //        animation.toValue = transform
@@ -354,6 +376,26 @@ class NatureView: UIView, CAAnimationDelegate {
 //        moon.add(scaleAnimation, forKey: scaleAnimation.keyPath)
         
         
+    }
+    
+    func moonMask(in rect: CGRect, forProgress progress: CGFloat)->CALayer {
+        let path = CGMutablePath()
+        let center = CGPoint(x: rect.midX, y: rect.midY)
+        path.move(to: CGPoint(x: rect.midX, y: rect.minY))
+        
+        let relativeProgress = (max(min(progress, 1), 0) - 0.5) * 2
+        let radius = rect.width/2
+        
+        let tgX = rect.midX+(relativeProgress * (radius*4/3))
+        path.addCurve(to: CGPoint(x: rect.midX, y: rect.maxY), control1: CGPoint(x: tgX, y: rect.minY), control2: CGPoint(x: tgX, y: rect.maxY))
+        path.addArc(center: center, radius: rect.width/2, startAngle: .pi/2, endAngle: .pi*3/2, clockwise: false)
+        //path.closeSubpath()
+        
+        let mask = CAShapeLayer()
+        mask.path = path
+        mask.fillColor = UIColor.white.cgColor
+        
+        return mask
     }
     
     func addWindAnimation(inRect rect: CGRect) {

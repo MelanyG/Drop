@@ -19,9 +19,11 @@ class ViewController: UIViewController, CAAnimationDelegate {
     var fallingWaterLayer: CAShapeLayer!
     var seaMaskLayer: WavesLayer!
     var dropForSea: DropLayer!
+    var circlePath:UIBezierPath!
     
     @IBOutlet weak var natureView: NatureView!
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var moonView: UIView!
     
     
     override func viewDidLoad() {
@@ -39,6 +41,55 @@ class ViewController: UIViewController, CAAnimationDelegate {
         mainLayer = DropLayer(x.bounds, shouldFillLayer:false)
         x.layer.addSublayer(mainLayer!)
         bigHiddenDrop.mask = fallingWaterLayer
+        
+        
+        let circleRect = moonView.frame
+        self.circlePath = UIBezierPath(ovalIn:circleRect)
+        moonView.center = CGPoint(x: circleRect.origin.x + circleRect.size.width, y: circleRect.origin.y + circleRect.size.height/2.0)
+        
+        
+//        let moonShape = UIBezierPath(ovalIn: moonView.bounds)
+//        moonShape.lineWidth = 4.0
+//        UIColor.red.setStroke()
+//        moonShape.stroke()
+//        moonShape.close()
+//        
+//        let moonLayer = CAShapeLayer()
+//        moonLayer.path = moonShape.cgPath
+//        moonLayer.opacity = 0
+        
+        
+        
+        
+        moonView.layer.backgroundColor = UIColor.red.cgColor
+//        moonView.layer.addSublayer(moonLayer)
+//        var transform = CATransform3DIdentity
+//        transform.m34 = -1 / 500.0
+//        
+//        transform = CATransform3DRotate(transform, (CGFloat(Double.pi * 0.3)), 0, 1, 0)
+//        moonView.layer.transform = transform
+        
+//        let orbit = CAKeyframeAnimation(keyPath: "position")
+//        orbit.path = self.circlePath.cgPath
+//        orbit.calculationMode = kCAAnimationPaced
+//        orbit.duration = 5.0
+//        orbit.repeatCount = Float(CGFloat.infinity)
+//        moonView.layer.add(orbit, forKey: "circleAnimation")
+        
+        let animation =  CABasicAnimation(keyPath: "transform.rotation.y")
+//        animation.fromValue = @(0);
+        animation.toValue = 2 * Double.pi
+        animation.repeatCount = Float(CGFloat.infinity)
+        animation.duration = 5.0
+//
+        moonView.layer.add(animation, forKey:"rotation")
+        
+//        var transform = CATransform3DIdentity
+//        transform.m34 = 1.0 / 500.0
+//        moonView.layer.transform = transform
+        
+        
+        
         
 //        let sun = SunLayer(CGRect(x: 0, y: 0, width: 50, height: 50))
 //        self.view.layer.addSublayer(sun)
